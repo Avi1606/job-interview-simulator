@@ -1,0 +1,92 @@
+# Application Configuration
+spring:
+  application:
+    name: interview-simulator-backend
+  
+  # MongoDB Configuration
+  data:
+    mongodb:
+      host: ${MONGODB_HOST:localhost}
+      port: ${MONGODB_PORT:27017}
+      database: ${MONGODB_DATABASE:interview_simulator}
+      username: ${MONGODB_USERNAME:}
+      password: ${MONGODB_PASSWORD:}
+      authentication-database: ${MONGODB_AUTH_DB:admin}
+  
+  # Security Configuration
+  security:
+    jwt:
+      secret: ${JWT_SECRET:mySecretKey123456789012345678901234567890}
+      expiration: ${JWT_EXPIRATION:86400000} # 24 hours in milliseconds
+      refresh-expiration: ${JWT_REFRESH_EXPIRATION:604800000} # 7 days
+  
+  # File Upload Configuration
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 100MB
+      max-request-size: 100MB
+      file-size-threshold: 2KB
+  
+  # Mail Configuration
+  mail:
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          connectiontimeout: 5000
+          timeout: 3000
+          writetimeout: 5000
+
+# Server Configuration
+server:
+  port: ${SERVER_PORT:8080}
+  servlet:
+    context-path: /api
+
+# Logging Configuration
+logging:
+  level:
+    com.interviewsimulator: DEBUG
+    org.springframework.security: DEBUG
+    org.springframework.web: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+# Management and Actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: when-authorized
+
+# Application specific properties
+app:
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000,http://localhost:5173}
+  
+  file-storage:
+    upload-dir: ${FILE_UPLOAD_DIR:./uploads}
+    max-file-size: 100MB
+  
+  aws:
+    region: ${AWS_REGION:us-east-1}
+    s3:
+      bucket: ${AWS_S3_BUCKET:interview-simulator-recordings}
+      
+  email:
+    from: ${EMAIL_FROM:noreply@interviewsimulator.com}
+    templates:
+      welcome: welcome-email.html
+      reset-password: reset-password.html
